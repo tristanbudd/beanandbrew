@@ -1,0 +1,48 @@
+/* Imports */
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+2:wght@300;400;500;600;700;800&display=swap');
+
+/* Global Modifiers */
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'M PLUS 2', sans-serif;
+}
+
+:root {
+    --error-red: #F44336;
+    --white: #FFFFFF;
+}
+
+/* Error Page Styling */
+.error-page {
+    display: block;
+    width: 100%;
+    height: 100vh;
+    margin: auto;
+    background-color: var(--error-red);
+    color: var(--white);
+    text-align: center;
+}
+
+.error-page button {
+    font-size: 18px;
+    margin: 12px;
+    padding: 6px;
+    color: var(--white);
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.error-page button:hover {
+    text-decoration: underline;
+}
+
+.error-spacer {
+    display: inline-block;
+    margin: 6px;
+    height: 2px;
+    width: 512px;
+    background-color: var(--white);
+}

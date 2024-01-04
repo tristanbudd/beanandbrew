@@ -3,7 +3,8 @@ $error_amount = 0;
 $error_message = "";
 
 if (!file_exists("../settings.json")) {
-    echo("<p>Errors Found</p>");
+    $error_message = "Error locating settings.json, If not setup go to /etc/installer.php";
+    header("Location: error.php?error_message=$error_message&retry_url=index.php");
 } else {
     $settings_data = file_get_contents("../settings.json");
 
@@ -25,8 +26,7 @@ if (!file_exists("../settings.json")) {
     }
 
     if ($error_amount > 0) {
-        echo("<p>Errors Found</p>");
-        echo("<p>$error_message</p>");
+        header("Location: error.php?error_message=$error_message&retry_url=index.php");
     } else {
         echo("<p>Success</p>");
     }
