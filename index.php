@@ -1,21 +1,10 @@
 <?php
-    if (isset($_GET['error_message'])) {
-        $error_message = $_GET['error_message'];
-    } else {
-        $error_message = "Unknown";
-    }
-
-    if (isset($_GET['retry_url'])) {
-        $retry_url = $_GET['retry_url'];
-    } else {
-        $retry_url = "../index.php";
-    }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Bean & Brew - Error</title>
+    <title>Bean & Brew - Home</title>
 
     <meta name="robots" content="noindex, nofollow">
     <meta name="googlebot" content="noindex, nofollow">
@@ -39,15 +28,8 @@
     <link rel="mask-icon" href="/favicons/safari-pinned-tab.svg" color="#7b7b7b">
     <link rel="shortcut icon" href="/favicons/favicon.ico">
 
-    <link rel="stylesheet" href="../style.css" type="text/css">
+    <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body>
-    <div class="error-page">
-        <h1>Uh Oh! An Error Has Occurred</h1>
-        <div class="error-spacer"></div>
-        <p><?php echo($error_message) ?></p>
-        <button type="button" onclick="window.location.href='<?php echo $retry_url; ?>'">Retry</button>
-        <button type="button" onclick="window.location.href='../index.php'">Return To Home</button>
-    </div>
 </body>
 </html>

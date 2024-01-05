@@ -4,6 +4,81 @@ if (file_exists("../settings.json")) {
     header("Location: error.php?error_message=$error_message");
 }
 
+$error_message = "This page is currently unavailable.";
+header("Location: error.php?error_message=$error_message");
+
+$connection_successful = false;
+
+$errors_found = false;
+$error_message = "";
+
+$display = array(
+    'server_name' => '',
+    'username' => '',
+    'password' => '',
+    'database_name' => ''
+);
+
+if(isset($_POST['test_connection'])) {
+    foreach($_POST as $key => $value) {
+        if (isset($display[$key])) {
+            $display[$key] = htmlspecialchars($value);
+        }
+    }
+
+    if ($_POST['server_name'] == "" or $_POST['database_name'] == "") {
+        $error_message = "Please fill out all fields.";
+        $errors_found = true;
+    } else {
+        $server_name = $_POST['server_name'];
+        $username = $_POST['username'] ?? "";
+        $password = $_POST['password'] ?? "";
+        $database_name = $_POST['database_name'];
+
+        $server_name = trim($server_name);
+        $username = trim($username);
+        $password = trim($password);
+        $database_name = trim($database_name);
+
+        $server_name = stripslashes($server_name);
+        $username = stripslashes($username);
+        $password = stripslashes($password);
+        $database_name = stripslashes($database_name);
+
+        $conn = mysqli_connect($server_name, $username, $password, $database_name);
+
+        if ($conn->connect_errno) {
+            $error_message = "Failed to connect to MySQL: " . mysqli_connect_error();
+            $errors_found = true;
+            die("could not connect");
+        } else {
+            $query = "CREATE DATABASE IF NOT EXISTS ?";
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param("s", $database_name);
+            $stmt->execute();
+
+            if ($stmt->error) {
+                $error_message = "Error creating database: " . $stmt->error;
+                $errors_found = true;
+            } else {
+                $display = array(
+                    'server_name' => '',
+                    'username' => '',
+                    'password' => '',
+                    'database_name' => ''
+                );
+
+                $error_message = "Database Connection Successful!";
+                $errors_found = true;
+                $connection_successful = true;
+            }
+
+            $stmt->close();
+            $conn->close();
+        }
+    }
+}
+
 /*
 touch("../settings.json");
 
@@ -46,5 +121,32 @@ fclose($settings_file);
     <link rel="stylesheet" href="../style.css" type="text/css">
 </head>
 <body>
+    <form method="post" action="">
+        <label>Server Name
+            <input type="text" name="server_name" placeholder="localhost"/>
+        </label>
+
+        <label>Username
+            <input type="text" name="username" placeholder="root"/>
+        </label>
+
+        <label>Password
+            <input type="password" name="password" placeholder=""/>
+        </label>
+
+        <label>Database Name
+            <input type="text" name="database_name" placeholder="bean_and_brew"/>
+        </label>
+
+        <button type="submit" name="test_connection">Test Connection</button>
+        <button type="submit" name="test_connection">Clear Database</button>
+        <button type="submit" name="submit">Submit</button>
+
+        <?php
+        if ($errors_found) {
+            echo("<p class='error-message'>$error_message</p>");
+        }
+        ?>
+    </form>
 </body>
 </html>
