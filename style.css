@@ -16,6 +16,10 @@ html {
     scroll-behavior: smooth;
 }
 
+body {
+    background-color: var(--black);
+}
+
 :root {
     --black: #000000;
     --black-tint: #090909;
@@ -294,6 +298,24 @@ header {
     font-weight: 400;
     color: var(--white);
     transition: padding-left 0.5s ease;
+}
+
+.double-section-column button {
+    width: 100%;
+    padding: 6px 20px;
+    border: none;
+    outline: none;
+    color: var(--black);
+    cursor: pointer;
+    position: relative;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.double-section-column button:hover {
+    box-shadow: 0 0 20px 2px var(--white);
+    transition: box-shadow 0.2s ease
 }
 
 /* Footer */

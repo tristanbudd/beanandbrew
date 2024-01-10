@@ -57,7 +57,64 @@ include("etc/connection.php");
         </nav>
     </header>
 
-    <br><br><br>
+    <div class="single-section">
+        <div class="container">
+            <div class="single-section-row">
+                <div class="single-section-column">
+                    <img src="img/bean_and_brew_large.png" alt="Image of a cafe interior.">
+                    <h2 class="text-align: center;">Welcome to Bean & Brew!</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="double-section">
+        <div class="container">
+            <div class="double-section-row">
+                <div class="double-section-column">
+                    <img src="img/preorder_img.jpg" alt="Image of a cafe interior.">
+                </div>
+                <div class="double-section-column">
+                    <h2>Pre-Order Coffee</h2>
+                    <p>Here you can pre-order coffee that will be freshly prepared and waiting for you when you arrive at one of our three restaurant locations. Simply choose the items you are looking for, add to basket and then create an account to place your order.</p>
+                    <br>
+                    <button href="shop.php">Pre-Order Coffee</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="double-section">
+        <div class="container">
+            <div class="double-section-row">
+                <div class="double-section-column">
+                    <h2>Create Booking</h2>
+                    <p>Here you will be able to create bookings to visit one of our three restaurant locations. If you want to reserve a space click the link below, enter some simple contact information and your time of arrival and we will find you a place!</p>
+                    <br>
+                    <button href="bookings.php">Create Booking</button>
+                </div>
+                <div class="double-section-column">
+                    <img src="img/createbooking_img.jpg" alt="Image of a coffee machine.">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="double-section">
+        <div class="container">
+            <div class="double-section-row">
+                <div class="double-section-column">
+                    <img src="img/viewlessons_img.jpg" alt="Image of a baker with dough on the table.">
+                </div>
+                <div class="double-section-column">
+                    <h2>View Lessons</h2>
+                    <p>Here you can pre-order coffee that will be freshly prepared and waiting for you when you arrive at one of our three restaurant locations. Simply choose the items you are looking for, add to basket and then create an account to place your order.</p>
+                    <br>
+                    <button href="lessons.php">View Lessons</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <footer class="footer">
         <div class="container">

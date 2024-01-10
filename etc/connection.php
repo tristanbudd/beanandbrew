@@ -46,5 +46,3 @@ if (!file_exists("settings.json")) {
         }
     }
 }
-
-?>
