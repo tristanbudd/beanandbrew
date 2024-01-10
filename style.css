@@ -82,6 +82,7 @@ header {
 .nav-logo-link {
     padding-left: 24px;
     cursor: pointer;
+    z-index: 99;
 }
 
 .nav-links {
@@ -115,7 +116,7 @@ header {
 }
 
 .nav-selected {
-    height: 4px;
+    height: 3px;
     background-color: var(--white);
     transition: color 0.3s ease 0s;
     margin-top: 4px;
@@ -124,7 +125,10 @@ header {
 /* Mobile Navigation */
 
 .burger {
+    position: absolute;
     display: block;
+    right: 0;
+    margin-right: 32px;
     cursor: pointer;
     width: 48px;
     height: 48px;
@@ -186,7 +190,7 @@ header {
 }
 
 .mobile-nav .nav-selected {
-    height: 5px;
+    height: 3px;
     background-color: var(--white);
     transition: color 0.3s ease 0s;
     margin-top: 8px;
@@ -373,6 +377,21 @@ header {
 }
 
 /* Responsiveness */
+
+@media screen and (max-width: 884px) {
+    .nav-main {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 884px) {
+    .mobile-nav {
+        display: none;
+    }
+    .burger {
+        display: none;
+    }
+}
 
 @media (max-width: 768px) {
     .footer-column {
