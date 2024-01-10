@@ -62,7 +62,8 @@ include("etc/connection.php");
             <div class="single-section-row">
                 <div class="single-section-column">
                     <img src="img/bean_and_brew_large.png" alt="Image of a cafe interior.">
-                    <h2 class="text-align: center;">Welcome to Bean & Brew!</h2>
+                    <h2>Welcome to Bean & Brew!</h2>
+                    <p>Life Is Hard. Coffee Makes It Better.</p>
                 </div>
             </div>
         </div>
@@ -88,13 +89,13 @@ include("etc/connection.php");
         <div class="container">
             <div class="double-section-row">
                 <div class="double-section-column">
+                    <img src="img/createbooking_img.jpg" alt="Image of a coffee machine.">
+                </div>
+                <div class="double-section-column">
                     <h2>Create Booking</h2>
                     <p>Here you will be able to create bookings to visit one of our three restaurant locations. If you want to reserve a space click the link below, enter some simple contact information and your time of arrival and we will find you a place!</p>
                     <br>
                     <button href="bookings.php">Create Booking</button>
-                </div>
-                <div class="double-section-column">
-                    <img src="img/createbooking_img.jpg" alt="Image of a coffee machine.">
                 </div>
             </div>
         </div>

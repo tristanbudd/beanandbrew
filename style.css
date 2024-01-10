@@ -28,6 +28,27 @@ body {
     --grey: #bbbbbb;
 }
 
+/* Custom Scrollbar */
+
+::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: var(--white);
+}
+
+::-webkit-scrollbar
+{
+    width: 6px;
+    background-color: var(--white);
+}
+
+::-webkit-scrollbar-thumb
+{
+    border-radius: 16px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: var(--grey);
+}
+
 /* Error Page Styling */
 
 .error-page {
@@ -235,6 +256,7 @@ header {
     font-weight: 600;
     position: relative;
     color: var(--white);
+    text-align: center;
 }
 
 .single-section-column p {
@@ -243,6 +265,7 @@ header {
     font-weight: 400;
     transition: padding-left 0.5s ease;
     color: var(--white);
+    text-align: center;
 }
 
 .single-section-column img {
@@ -272,6 +295,7 @@ header {
 .double-section-column img {
     width: 100%;
     height: auto;
+    border-radius: 5%;
 }
 
 .double-section-column h2 {
