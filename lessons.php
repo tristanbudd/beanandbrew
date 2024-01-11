@@ -1,4 +1,6 @@
-<?php ?>
+<?php
+include("etc/connection.php");
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -38,19 +40,19 @@
 
         <nav class="nav-main">
             <ul class="nav-links">
-                <li>Home<div class="nav-selected"></div></li>
+                <li><a href="index.php">Home</a></li>
                 <li><a href="shop.php">Pre-Order Coffee</a></li>
                 <li><a href="bookings.php">Create Booking</a></li>
-                <li><a href="lessons.php">View Lessons</a></li>
+                <li>View Lessons<div class="nav-selected"></div></li>
             </ul>
         </nav>
 
         <nav class="mobile-nav">
             <ul class="nav-main-mobile">
-                <li class="nav-deco">Home<div class="nav-selected"></div></li>
+                <li class="nav-deco">View Lessons<div class="nav-selected"></div></li>
+                <li class="nav-deco"><a href="index.php">Home</a></li>
                 <li class="nav-deco"><a href="shop.php">Pre-Order Coffee</a></li>
                 <li class="nav-deco"><a href="bookings.php">Create Booking</a></li>
-                <li class="nav-deco"><a href="lessons.php">View Lessons</a></li>
             </ul>
         </nav>
     </header>
@@ -59,57 +61,69 @@
         <div class="container">
             <div class="single-section-row">
                 <div class="single-section-column">
-                    <img src="img/bean_and_brew_large.png" alt="Image of a cafe interior.">
-                    <h2>Welcome to Bean & Brew!</h2>
-                    <p>Life Is Hard. Coffee Makes It Better.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="double-section">
-        <div class="container">
-            <div class="double-section-row">
-                <div class="double-section-column">
-                    <img src="img/preorder_img.jpg" alt="Image of a cafe interior.">
-                </div>
-                <div class="double-section-column">
-                    <h2>Pre-Order Coffee</h2>
-                    <p>Here you can pre-order coffee that will be freshly prepared and waiting for you when you arrive at one of our three restaurant locations. Simply choose the items you are looking for, add to basket and then create an account to place your order.</p>
-                    <br>
-                    <button onclick="location.href='shop.php'">Pre-Order Coffee</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="double-section">
-        <div class="container">
-            <div class="double-section-row">
-                <div class="double-section-column">
-                    <img src="img/createbooking_img.jpg" alt="Image of a coffee machine.">
-                </div>
-                <div class="double-section-column">
-                    <h2>Create Booking</h2>
-                    <p>Here you will be able to create bookings to visit one of our three restaurant locations. If you want to reserve a space click the link below, enter some simple contact information and your time of arrival and we will find you a place!</p>
-                    <br>
-                    <button onclick="location.href='bookings.php'">Create Booking</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="double-section">
-        <div class="container">
-            <div class="double-section-row">
-                <div class="double-section-column">
-                    <img src="img/viewlessons_img.jpg" alt="Image of a baker with dough on the table.">
-                </div>
-                <div class="double-section-column">
                     <h2>View Lessons</h2>
-                    <p>Here you can pre-order coffee that will be freshly prepared and waiting for you when you arrive at one of our three restaurant locations. Simply choose the items you are looking for, add to basket and then create an account to place your order.</p>
-                    <br>
-                    <button onclick="location.href='lessons.php'">View Lessons</button>
+                    <p>View all of our available lessons here:</p>
+
+                    <?php
+                        $query = "SELECT * FROM lessons";
+                        $query_result = $conn->query($query);
+
+                        if (mysqli_num_rows($query_result) == 0) {
+                            echo "<br><br><h3>No Lessons Available, Try Again Later!</h3>";
+                        } else {
+                            $amount_found = strval(mysqli_num_rows($query_result));
+
+                            $query = "SELECT SUM(available_spaces) FROM lessons";
+                            $query_result = $conn->query($query);
+                            $row = $query_result->fetch_row();
+                            $spaces_available = $row[0];
+
+                            echo "<p>($amount_found Lessons Found) ($spaces_available Spaces Available)</p>";
+
+                            $offset_amount = $_GET['offset'] ?? 0;
+
+                            $query = "SELECT * FROM lessons LIMIT 10 OFFSET $offset_amount";
+                            $query_result = $conn->query($query);
+
+                            foreach($query_result as $row) {
+                                $id = $row["lesson_id"];
+                                $title = $row["title"];
+                                $description = $row["description"];
+                                $date = $row["date"];
+                                $duration = $row["duration"];
+                                $available_spaces = $row["available_spaces"];
+
+                                if ($available_spaces > 0) {
+                                    echo("<a href='login.php?action=book_lesson&id=$id'><div class='lesson-block'>");
+                                } else {
+                                    echo("<div class='lesson-block-red'>");
+                                }
+
+                                echo("<h3>$title</h3>");
+                                echo("<p>$description</p>");
+                                echo("<p><b>Date:</b> $date</p>");
+                                echo("<p><b>Duration:</b> $duration</p>");
+                                echo("<p><b>Available Spaces:</b> $available_spaces</p>");
+
+                                echo("</div></a>");
+                            }
+
+                            $query = "SELECT * FROM lessons";
+                            $query_result = $conn->query($query);
+
+                            if (strval(mysqli_num_rows($query_result)) > 10) {
+                                $next_amount = $offset_amount + 10;
+                                $previous_amount = $offset_amount - 10;
+                                if ($offset_amount < mysqli_num_rows($query_result) - 1) {
+                                    echo "<a href='?offset=$next_amount'><p>Next -></p></a>";
+                                }
+
+                                if ($offset_amount > 0) {
+                                    echo "<a href='?offset=$previous_amount'><p><- Previous</p></a>";
+                                }
+                            }
+                        }
+                    ?>
                 </div>
             </div>
         </div>

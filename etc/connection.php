@@ -28,7 +28,7 @@ if (!file_exists("settings.json")) {
     if ($error_amount > 0) {
         header("Location: etc/error.php?error_message=$error_message");
     } else {
-        $conn = new mysqli($settings_json->server_name, $settings_json->username, $settings_json->password);
+        $conn = new mysqli($settings_json->server_name, $settings_json->username, $settings_json->password, $settings_json->database_name);
 
         if ($conn->connect_errno) {
             $error_message = "Failed to connect to MySQL: " . $conn->connect_error;
