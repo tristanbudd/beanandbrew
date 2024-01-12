@@ -270,7 +270,6 @@ header {
     display: block;
     font-size:  16px;
     font-weight: 400;
-    transition: padding-left 0.5s ease;
     color: var(--white);
     text-align: center;
 }
@@ -280,7 +279,27 @@ header {
     height: auto;
 }
 
+.single-section-column button {
+    width: 100%;
+    padding: 6px 20px;
+    margin-bottom: 12px;
+    border: none;
+    outline: none;
+    color: var(--black);
+    cursor: pointer;
+    position: relative;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.single-section-column button:hover {
+    box-shadow: 0 0 20px 2px var(--white);
+    transition: box-shadow 0.2s ease
+}
+
 /* Lesson Block */
+
 .lesson-block,
 .lesson-block-red {
     margin: 24px;
@@ -337,12 +356,12 @@ header {
     font-size:  16px;
     font-weight: 400;
     color: var(--white);
-    transition: padding-left 0.5s ease;
 }
 
 .double-section-column button {
     width: 100%;
     padding: 6px 20px;
+    margin-bottom: 12px;
     border: none;
     outline: none;
     color: var(--black);
@@ -354,6 +373,74 @@ header {
 }
 
 .double-section-column button:hover {
+    box-shadow: 0 0 20px 2px var(--white);
+    transition: box-shadow 0.2s ease
+}
+
+/* Triple Section */
+
+.triple-section {
+    width: 100%;
+    padding: 32px 0;
+    background-color: var(--black-tint);
+}
+
+.triple-section-row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.triple-section-column {
+    width: 33%;
+    padding: 0 24px;
+    margin-bottom: 32px;
+}
+
+.triple-section-column img {
+    width: 100%;
+    height: auto;
+}
+
+.triple-section-column h2 {
+    font-size: 32px;
+    margin-bottom: 16px;
+    font-weight: 600;
+    color: var(--white);
+    position: relative;
+}
+
+.triple-section-column h2::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    height: 3px;
+    background-color: var(--white);
+    width: 100%;
+}
+
+.triple-section-column p {
+    display: block;
+    font-size:  16px;
+    font-weight: 400;
+    color: var(--white);
+}
+
+.triple-section-column button {
+    width: 100%;
+    padding: 6px 20px;
+    margin-bottom: 12px;
+    border: none;
+    outline: none;
+    color: var(--black);
+    cursor: pointer;
+    position: relative;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.triple-section-column button:hover {
     box-shadow: 0 0 20px 2px var(--white);
     transition: box-shadow 0.2s ease
 }
@@ -472,5 +559,18 @@ header {
     .double-section-column {
         width: 100%;
         margin-bottom: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .triple-section-column {
+        width: 50%;
+        margin-bottom: 30px;
+    }
+}
+
+@media (max-width: 574px) {
+    .triple-section-column {
+        width: 100%;
     }
 }

@@ -5,7 +5,7 @@ include("etc/connection.php");
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Bean & Brew - Lessons</title>
+    <title>Bean & Brew - Shop</title>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -41,18 +41,18 @@ include("etc/connection.php");
         <nav class="nav-main">
             <ul class="nav-links">
                 <li><a href="index.php">Home</a></li>
-                <li><a href="shop.php">Pre-Order Coffee</a></li>
+                <li>Pre-Order Coffee<div class="nav-selected"></div></li>
                 <li><a href="bookings.php">Create Booking</a></li>
-                <li>View Lessons<div class="nav-selected"></div></li>
+                <li><a href="lessons.php">View Lessons</a></li>
             </ul>
         </nav>
 
         <nav class="mobile-nav">
             <ul class="nav-main-mobile">
-                <li class="nav-deco">View Lessons<div class="nav-selected"></div></li>
+                <li class="nav-deco">Pre-Order Coffee<div class="nav-selected"></div></li>
                 <li class="nav-deco"><a href="index.php">Home</a></li>
-                <li class="nav-deco"><a href="shop.php">Pre-Order Coffee</a></li>
                 <li class="nav-deco"><a href="bookings.php">Create Booking</a></li>
+                <li class="nav-deco"><a href="lessons.php">View Lessons</a></li>
             </ul>
         </nav>
     </header>
@@ -61,68 +61,97 @@ include("etc/connection.php");
         <div class="container">
             <div class="single-section-row">
                 <div class="single-section-column">
-                    <h2>View Lessons</h2>
-                    <p>View all of our available lessons here:</p>
+                    <h2>Pre-Order Coffee</h2>
+                    <p>Pre-Order Coffee or Bakery Items here:</p>
 
                     <?php
-                        $query = "SELECT * FROM lessons";
+                        $query = "SELECT * FROM items";
                         $query_result = $conn->query($query);
 
                         if (mysqli_num_rows($query_result) == 0) {
-                            echo "<br><br><h3>No Lessons Available, Try Again Later!</h3>";
+                            echo "<br><br><h3>No Items Available, Try Again Later!</h3>";
                         } else {
                             $amount_found = strval(mysqli_num_rows($query_result));
 
-                            $query = "SELECT SUM(available_spaces) FROM lessons";
+                            $query = "SELECT SUM(in_stock) FROM items";
                             $query_result = $conn->query($query);
                             $row = $query_result->fetch_row();
-                            $spaces_available = $row[0];
+                            $stock_left = $row[0];
 
-                            echo "<p>($amount_found Lessons Found) ($spaces_available Spaces Available)</p>";
-
-                            $offset_amount = $_GET['offset'] ?? 0;
-
-                            $query = "SELECT * FROM lessons LIMIT 10 OFFSET $offset_amount";
-                            $query_result = $conn->query($query);
-
-                            foreach($query_result as $row) {
-                                $id = $row["lesson_id"];
-                                $title = $row["title"];
-                                $description = $row["description"];
-                                $date = $row["date"];
-                                $duration = $row["duration"];
-                                $available_spaces = $row["available_spaces"];
-
-                                if ($available_spaces > 0) {
-                                    echo("<a href='login.php?action=book_lesson&id=$id'><div class='lesson-block'>");
-                                } else {
-                                    echo("<div class='lesson-block-red'>");
-                                }
-
-                                echo("<h3>$title</h3>");
-                                echo("<p>$description</p>");
-                                echo("<p><b>Date:</b> $date</p>");
-                                echo("<p><b>Duration:</b> $duration</p>");
-                                echo("<p><b>Available Spaces:</b> $available_spaces</p>");
-
-                                echo("</div></a>");
-                            }
-
-                            $query = "SELECT * FROM lessons";
-                            $query_result = $conn->query($query);
-
-                            if (strval(mysqli_num_rows($query_result)) > 10) {
-                                $next_amount = $offset_amount + 10;
-                                $previous_amount = $offset_amount - 10;
-                                if ($offset_amount < mysqli_num_rows($query_result) - 1) {
-                                    echo "<a href='?offset=$next_amount'><p>Next -></p></a>";
-                                }
-
-                                if ($offset_amount > 0) {
-                                    echo "<a href='?offset=$previous_amount'><p><- Previous</p></a>";
-                                }
-                            }
+                            echo "<p>($amount_found Products Found) ($stock_left Items In Stock)</p>";
                         }
+                    ?>
+
+                    <br>
+                    <button onclick="location.href='shop_basket.php'">View Basket</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="triple-section">
+        <div class="container">
+            <div class="triple-section-row">
+                <?php
+                $query = "SELECT * FROM items";
+                $query_result = $conn->query($query);
+
+                if (mysqli_num_rows($query_result) != 0) {
+                    $offset_amount = $_GET['offset'] ?? 0;
+
+                    $query = "SELECT * FROM items LIMIT 9 OFFSET $offset_amount";
+                    $query_result = $conn->query($query);
+                }
+
+                foreach($query_result as $row) {
+                    $id = $row["item_id"];
+                    $name = $row["name"];
+                    $description = $row["description"];
+                    $price = $row["price"];
+                    $in_stock = $row["in_stock"];
+                    $image_url = $row["image_url"];
+
+                    if (strlen($description) > 100) {
+                        $description = substr($description, 0, 100);
+                        $description = rtrim($description, " \t\n\r\0\x0B");
+                        $description .= "...";
+                    }
+
+                    echo("<div class='triple-section-column'>");
+                    echo("<img src='$image_url' alt='$name Image'></img>");
+                    echo("<h2>$name</h2>");
+                    echo("<p>$description</p>");
+                    echo("<br>");
+                    echo("<p>£$price • $in_stock In Stock</p>");
+                    echo("<br>");
+                    echo "<button onclick=\"location.href='shop_view.php?id=$id'\">View Product</button>";
+                    echo "<button onclick=\"location.href='shop_functions.php?action=add_item&id=$id'\">Add To Basket</button>";
+                    echo("</div>");
+                }
+                ?>
+            </div>
+        </div>
+    </div>
+
+    <div class="single-section">
+        <div class="container">
+            <div class="single-section-row">
+                <div class="single-section-column">
+                    <?php
+                    $query = "SELECT * FROM items";
+                    $query_result = $conn->query($query);
+
+                    if (strval(mysqli_num_rows($query_result)) > 9) {
+                        $next_amount = $offset_amount + 9;
+                        $previous_amount = $offset_amount - 9;
+                        if ($offset_amount < mysqli_num_rows($query_result) - 1) {
+                            echo "<a href='?offset=$next_amount'><p>Next -></p></a>";
+                        }
+
+                        if ($offset_amount > 0) {
+                            echo "<a href='?offset=$previous_amount'><p><- Previous</p></a>";
+                        }
+                    }
                     ?>
                 </div>
             </div>
