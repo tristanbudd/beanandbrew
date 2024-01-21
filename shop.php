@@ -111,22 +111,24 @@ include("etc/connection.php");
                     $in_stock = $row["in_stock"];
                     $image_url = $row["image_url"];
 
-                    if (strlen($description) > 100) {
-                        $description = substr($description, 0, 100);
-                        $description = rtrim($description, " \t\n\r\0\x0B");
-                        $description .= "...";
-                    }
+                    if ($in_stock > 0) {
+                        if (strlen($description) > 100) {
+                            $description = substr($description, 0, 100);
+                            $description = rtrim($description, " \t\n\r\0\x0B");
+                            $description .= "...";
+                        }
 
-                    echo("<div class='triple-section-column'>");
-                    echo("<img src='$image_url' alt='$name Image'></img>");
-                    echo("<h2>$name</h2>");
-                    echo("<p>$description</p>");
-                    echo("<br>");
-                    echo("<p>£$price • $in_stock In Stock</p>");
-                    echo("<br>");
-                    echo "<button onclick=\"location.href='shop_view.php?id=$id'\">View Product</button>";
-                    echo "<button onclick=\"location.href='shop_functions.php?action=add_item&id=$id'\">Add To Basket</button>";
-                    echo("</div>");
+                        echo("<div class='triple-section-column'>");
+                        echo("<img src='$image_url' alt='$name Image'></img>");
+                        echo("<h2>$name</h2>");
+                        echo("<p>$description</p>");
+                        echo("<br>");
+                        echo("<p>£" . number_format($price, 2) . " • $in_stock In Stock</p>");
+                        echo("<br>");
+                        echo "<button onclick=\"location.href='shop_view.php?id=$id'\">View Product</button>";
+                        echo "<button onclick=\"location.href='shop_functions.php?action=add_item&id=$id'\">Add To Basket</button>";
+                        echo("</div>");
+                    }
                 }
                 ?>
             </div>
@@ -141,10 +143,11 @@ include("etc/connection.php");
                     $query = "SELECT * FROM items";
                     $query_result = $conn->query($query);
 
-                    if (strval(mysqli_num_rows($query_result)) > 9) {
+                    if (mysqli_num_rows($query_result) > 9) {
                         $next_amount = $offset_amount + 9;
                         $previous_amount = $offset_amount - 9;
-                        if ($offset_amount < mysqli_num_rows($query_result) - 1) {
+
+                        if ($offset_amount + 9 < mysqli_num_rows($query_result)) {
                             echo "<a href='?offset=$next_amount'><p>Next -></p></a>";
                         }
 
@@ -154,6 +157,7 @@ include("etc/connection.php");
                     }
                     ?>
                 </div>
+            </div>
             </div>
         </div>
     </div>

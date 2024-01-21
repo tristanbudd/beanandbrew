@@ -1,5 +1,18 @@
 <?php
+session_start();
 include("etc/connection.php");
+
+$basket_total = 0.00;
+$vat = 0.00;
+
+$count = 0;
+if(isset($_SESSION['basket'])) {
+    foreach($_SESSION['basket'] as $key => $basket_item) {
+        $count += 1;
+    }
+}
+
+$item_count = $count;
 ?>
 
 <!DOCTYPE html>
@@ -68,6 +81,88 @@ include("etc/connection.php");
     </div>
 </div>
 
+<?php
+if ($item_count > 0) {
+    echo("<div class='single-section'>");
+        echo("<div class='container'>");
+            echo("<div class='single-section-row'>");
+                echo("<div class='single-section-column'>");
+                    if(isset($_SESSION['basket'])) {
+                        foreach ($_SESSION['basket'] as $basket_item) {
+                            $id = $basket_item['item'];
+
+                            $query = "SELECT * FROM items WHERE item_id = '$id'";
+                            $query_result = $conn->query($query);
+
+                            foreach($query_result as $row) {
+                                $name = $row["name"];
+                                $description = $row["description"];
+                                $price = $row["price"];
+                                $basket_total += $price;
+                                $image_url = $row["image_url"];
+
+                                if (strlen($description) > 100) {
+                                    $description = substr($description, 0, 100);
+                                    $description = rtrim($description, " \t\n\r\0\x0B");
+                                    $description .= "...";
+                                }
+                            }
+
+                            echo("<a href='shop_view.php?id=$id'><div class='basket-block'>");
+                                echo("<img src='$image_url' alt='$name Image'></img>");
+                                echo("<h2>$name</h2>");
+                                echo("<p>$description</p>");
+                                echo("<br>");
+                                echo("<p>Total: £" . number_format($price * $basket_item['quantity'], 2) . "<br>(£" . number_format($price, 2) . " Each)</p>");
+                            echo("</div></a>");
+
+                            echo "<a href='shop_functions.php?action=add_item&id=$id'><p>Add One (+)</p></a>";
+                            echo "<a href='shop_functions.php?action=remove_item&id=$id'><p>Remove One (-)</p></a>";
+                            echo("<br>");
+
+                            $vat = $basket_total / 5;
+                        }
+                    }
+                echo("</div>");
+            echo("</div>");
+        echo("</div>");
+    echo("</div>");
+
+    echo("<div class='single-section'>");
+        echo("<div class='container'>");
+            echo("<div class='single-section-row'>");
+                echo("<div class='single-section-column'>");
+                    echo("<p>VAT (20%): £" . number_format($vat, 2) . "</p>");
+                    echo("<p>Basket Total: £" . number_format($basket_total, 2) . "</p>");
+                    echo("<br>");
+                    echo("<button onclick=\"location.href='shop_functions.php?action=clear_basket'\">Clear Basket</button>");
+                    echo("<button onclick=\"location.href='shop_functions.php?action=place_order'\">Place Order</button>");
+                echo("</div>");
+            echo("</div>");
+        echo("</div>");
+    echo("</div>");
+} else {
+    echo("<div class='single-section'>");
+        echo("<div class='container'>");
+            echo("<div class='single-section-row'>");
+                echo("<div class='single-section-column'>");
+                    echo("<p>Your Basket Is Empty</p>");
+                echo("</div>");
+            echo("</div>");
+        echo("</div>");
+    echo("</div>");
+}
+
+echo("<div class='single-section'>");
+    echo("<div class='container'>");
+        echo("<div class='single-section-row'>");
+            echo("<div class='single-section-column'>");
+                echo("<a href='shop.php'><p><- Continue Shopping</p></a>");
+            echo("</div>");
+        echo("</div>");
+    echo("</div>");
+echo("</div>");
+?>
 
 <footer class="footer">
     <div class="container">

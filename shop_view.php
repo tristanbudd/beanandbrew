@@ -98,7 +98,7 @@ if (mysqli_num_rows($query_result) == 0) {
             echo("<p>£$price • $in_stock In Stock</p>");
             echo("<br>");
             echo "<button onclick='location.href=\"shop_functions.php?action=add_item&id=$id\"'>Add To Basket</button>";
-            echo "<button onclick='location.href=\"shop.php\"'>Go Back</button>";
+            echo "<button onclick='history.back()'>Go Back</button>";
             echo("</div>");
             echo("</div>");
         ?>
