@@ -61,7 +61,7 @@ if (!empty($_POST)) {
                 $_SESSION['id'] = $query_result_table['user_id'];
                 header("location: dashboard.php");
             } else {
-                echo "<script> alert('An error occured obtaining your Session ID, please try again.'); </script>";
+                echo "<script> alert('An error occurred obtaining your Session ID, please try again.'); </script>";
                 header("location: login.php");
             }
         }
