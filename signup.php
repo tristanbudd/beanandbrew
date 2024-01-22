@@ -27,8 +27,8 @@ if (!empty($_POST)) {
     if ($_POST['username'] == "" or $_POST['email'] == "" or $_POST['password'] == "") {
         $error_message = "Please fill out all fields.";
         $errors_found++;
-    } elseif (check_length($username, 3, 32)) {
-        $error_message = "Username must be 3 characters or more and less than 32 characters.";
+    } elseif (check_length($username, 2, 32)) {
+        $error_message = "Username must be 2 characters or more and less than 32 characters.";
         $errors_found++;
     } elseif (check_length($email, 3, 128)) {
         $error_message = "Email must be 3 characters or more and less than 128 characters.";
@@ -89,7 +89,7 @@ if (!empty($_POST)) {
         $query_result = mysqli_query($conn , $query) or die("MySQL Error: " . mysqli_error($conn));
         if (mysqli_num_rows($query_result) > 0) {
             $query_result_table = mysqli_fetch_array($query_result);
-            $_SESSION['id'] = $query_result_table['id'];
+            $_SESSION['id'] = $query_result_table['user_id'];
             header("location: dashboard.php");
         } else {
             echo "<script> alert('An error occurred obtaining your Session ID, redirecting to the login page.'); </script>";
@@ -137,19 +137,13 @@ if (!empty($_POST)) {
 
     <nav class="nav-main">
         <ul class="nav-links">
-            <li><a href="index.php">Home</a></li>
-            <li><a href="shop.php">Pre-Order Coffee</a></li>
-            <li><a href="bookings.php">Create Booking</a></li>
-            <li><a href="lessons.php">View Lessons</a></li>
+            <button class="header-button" onclick="location.href='index.php'">Return To Homepage</button>
         </ul>
     </nav>
 
     <nav class="mobile-nav">
         <ul class="nav-main-mobile">
-            <li class="nav-deco"><a href="index.php">Home</a></li>
-            <li class="nav-deco"><a href="shop.php">Pre-Order Coffee</a></li>
-            <li class="nav-deco"><a href="bookings.php">Create Booking</a></li>
-            <li class="nav-deco"><a href="lessons.php">View Lessons</a></li>
+            <button class="header-button" onclick="location.href='index.php'">Return To Homepage</button>
         </ul>
     </nav>
 </header>
@@ -169,7 +163,7 @@ if (!empty($_POST)) {
                         <div class="username_check" id="username_check">
                             <br>
                             <p class="form-label">Username must contain the following:</p>
-                            <p id="username3" class="form-label invalid">Must be more than <b>2 characters</b></p>
+                            <p id="username3" class="form-label invalid">Must be more than or equal to <b>2 characters</b></p>
                             <p id="username32" class="form-label invalid">Must be less than <b>32 characters</b></p>
                             <br>
                         </div>

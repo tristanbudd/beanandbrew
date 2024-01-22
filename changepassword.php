@@ -3,16 +3,18 @@ session_start();
 include("etc/connection.php");
 include("etc/validation.php");
 
-if (isset($_SESSION['id'])) {
-    header("Location: dashboard.php");
+if (!isset($_SESSION['id'])) {
+    header("Location: login.php");
+} else {
+    $id = $_SESSION['id'];
 }
 
 $error_message = NULL;
 $errors_found = 0;
 
 $display = array(
-    'email' => '',
-    'password' => ''
+    'old_password' => '',
+    'new_password' => ''
 );
 
 foreach($_POST as $key => $value) {
@@ -22,48 +24,59 @@ foreach($_POST as $key => $value) {
 }
 
 if (!empty($_POST)) {
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+    $old_password = $_POST['old_password'];
+    $new_password = $_POST['new_password'];
+    $confirm_new_password = $_POST['confirm_new_password'];
 
-    if ($_POST['email'] == "" or $_POST['password'] == "") {
+    if ($_POST['old_password'] == "" or $_POST['new_password'] == "" or $_POST['confirm_new_password'] == "") {
         $error_message = "Please fill out all fields.";
+        $errors_found++;
+    } else if ($new_password != $confirm_new_password) {
+        $error_message = "Password confirmation does not match the new password provided.";
         $errors_found++;
     }
 
-    $email = clean_input($email);
-    $password = clean_input($password);
+    $old_password = clean_input($old_password);
+    $new_password = clean_input($new_password);
+    $confirm_new_password = clean_input($confirm_new_password);
 
-    $query = "SELECT * FROM users WHERE email = '$email'";
+    $query = "SELECT * FROM users WHERE user_id = '$id'";
     $query_result = mysqli_query($conn , $query) or die("MySQL Error: " . mysqli_error($conn));
     if (!mysqli_num_rows($query_result) > 0) {
-        $error_message = "No accounts under this email address exist, please ensure it is correct or sign up.";
-        $errors_found++;
+        echo("<script>alert('No accounts under this ID, Redirecting...')</script>");
+        header("Location: login.php");
     }
 
     if ($errors_found == 0) {
         $row = mysqli_fetch_array($query_result);
         $hash = $row['password'];
-        if (!password_verify($password, $hash)) {
-            $error_message = "Password is invalid, please try again...";
+        if (!password_verify($old_password, $hash)) {
+            $error_message = "Old password is invalid, please try again...";
             $errors_found++;
         }
 
         if ($errors_found == 0) {
             $display = array(
-                'email' => '',
-                'password' => ''
+                'old_password' => '',
+                'new_password' => ''
             );
 
-            $query = "SELECT * FROM users WHERE email = '$email'";
-            $query_result = mysqli_query($conn , $query) or die("MySQL Error: " . mysqli_error($conn));
-            if (mysqli_num_rows($query_result) > 0) {
-                $query_result_table = mysqli_fetch_array($query_result);
-                $_SESSION['id'] = $query_result_table['user_id'];
-                header("location: dashboard.php");
-            } else {
-                echo "<script> alert('An error occured obtaining your Session ID, please try again.'); </script>";
-                header("location: login.php");
-            }
+            $hash_options = [
+                'cost' => 12
+            ];
+
+            $hashed_password = password_hash($new_password, PASSWORD_BCRYPT, $hash_options);
+
+            $query = "UPDATE users SET password = ? WHERE user_id = ?";
+
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param("s", $new_password);
+
+            $stmt->execute();
+
+            $stmt->close();
+
+            header("Leader: dashboard.php");
         }
     }
 }
@@ -72,7 +85,7 @@ if (!empty($_POST)) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Bean & Brew - Log In</title>
+    <title>Bean & Brew - Change Password</title>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -107,13 +120,13 @@ if (!empty($_POST)) {
 
     <nav class="nav-main">
         <ul class="nav-links">
-            <button class="header-button" onclick="location.href='index.php'">Return To Homepage</button>
+            <button class="header-button" onclick="location.href='dashboard.php'">Return To Dashboard</button>
         </ul>
     </nav>
 
     <nav class="mobile-nav">
         <ul class="nav-main-mobile">
-            <button class="header-button" onclick="location.href='index.php'">Return To Homepage</button>
+            <button class="header-button" onclick="location.href='dashboard.php'">Return To Dashboard</button>
         </ul>
     </nav>
 </header>
@@ -122,17 +135,19 @@ if (!empty($_POST)) {
     <div class="container">
         <div class="single-section-row">
             <div class="single-section-column">
-                <h2>Log In</h2>
-                <p>Log in to the Bean & Brew platform.</p>
+                <h2>Change Password</h2>
+                <p>Change the password to your Bean & Brew account.</p>
                 <br>
                 <div class="login-form">
                     <form method="post" action="">
-                        <label class="form-label" for="email">Email</label>
-                        <input class="form-input" type="text" name="email" id="email" placeholder="Enter Email..." value="<?php echo $display['email']; ?>">
+                        <label class="form-label" for="old_password">Old Password</label>
+                        <input class="form-input" type="password" name="old_password" id="old_password" placeholder="Enter Old Password..." value="<?php echo $display['old_password']; ?>">
 
-                        <label class="form-label" for="password">Password</label>
-                        <input class="form-input" type="password" name="password" id="password" placeholder="Enter Password..." value="<?php echo $display['password']; ?>">
-                        <a id="password_view_text" onclick="toggle_view_password()">Show Password</a>
+                        <label class="form-label" for="new_password">New Password</label>
+                        <input class="form-input" type="password" name="new_password" id="new_password" placeholder="Enter New Password..." value="<?php echo $display['new_password']; ?>">
+
+                        <label class="form-label" for="confirm_new_password">Confirm New Password</label>
+                        <input class="form-input" type="password" name="confirm_new_password" id="confirm_new_password" placeholder="Enter New Password Again...">
 
                         <br>
 
@@ -144,8 +159,7 @@ if (!empty($_POST)) {
                             ?>
                         </div>
 
-                        <button class="form-button" type="submit" value="submit">Log In</button>
-                        <p>Don't have an account? Click <a href="signup.php">Here</a> to sign up.</p>
+                        <button class="form-button" type="submit" value="submit">Change Password</button>
                     </form>
                 </div>
             </div>

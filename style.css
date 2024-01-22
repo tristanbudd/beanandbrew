@@ -103,6 +103,19 @@ header {
     background-color: var(--black);
 }
 
+.header-button {
+    width: auto;
+    padding: 6px 20px;
+    border: none;
+    outline: none;
+    color: var(--black);
+    cursor: pointer;
+    position: relative;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
 .nav-logo-link {
     padding-left: 24px;
     cursor: pointer;
@@ -393,7 +406,8 @@ header {
 
 /* Basket Block */
 .basket-block {
-    width: 100%;
+    margin-left: 48px;
+    margin-right: 48px;
     padding: 12px;
     cursor: pointer;
     border: 3px solid var(--white);

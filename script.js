@@ -72,7 +72,7 @@ confirm_password_input.onblur = function() {
 }
 
 username_input.onkeyup = function() {
-    if(username_input.value.length >= 3) {
+    if(username_input.value.length >= 2) {
         username3.classList.remove("invalid");
         username3.classList.add("valid");
     } else {
