@@ -298,6 +298,88 @@ header {
     transition: box-shadow 0.2s ease
 }
 
+/* Login Form */
+.login-form form {
+    display: flex;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+}
+
+.form-input {
+    width: 300px;
+    margin: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #0e0e0e;
+    padding: 4px;
+    border-color: #0e0e0e;
+    border-style: solid;
+    border-radius: 4px;
+}
+
+.error-message {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--error-red);
+    padding-bottom: 8px;
+}
+
+.valid:after {
+    position: relative;
+    right: -16px;
+    content: "✔";
+}
+
+.invalid:after {
+    position: relative;
+    right: -16px;
+    content: "✖";
+}
+
+.password_check {
+    display: none;
+    box-sizing: unset;
+    padding: 0;
+    margin: 0;
+}
+
+.password_confirm_check {
+    display: none;
+    box-sizing: unset;
+    padding: 0;
+    margin: 0;
+}
+
+.email_check {
+    display: none;
+    box-sizing: unset;
+    padding: 0;
+    margin: 0;
+}
+
+.username_check {
+    display: none;
+    box-sizing: unset;
+    padding: 0;
+    margin: 0;
+}
+
+.login-form a {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--white);
+    cursor: pointer;
+}
+
+.login-form a:hover {
+    color: var(--grey);
+    transition: all 0.5s;
+}
+
 /* Lesson Block */
 
 .lesson-block,

@@ -115,6 +115,20 @@
         </div>
     </div>
 
+    <div class="single-section">
+        <div class="container">
+            <div class="single-section-row">
+                <div class="single-section-column">
+                    <h2>Customer Dashboard</h2>
+                    <p>Log In or Sign Up to access the Customer Dashboard.</p>
+                    <br>
+                    <button onclick="location.href='login.php'">Log In</button>
+                    <button onclick="location.href='signup.php'">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <footer class="footer">
         <div class="container">
             <div class="footer-row">
