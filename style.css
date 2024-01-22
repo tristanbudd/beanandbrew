@@ -104,7 +104,7 @@ header {
 }
 
 .header-button {
-    width: auto;
+    margin-right: 24px;
     padding: 6px 20px;
     border: none;
     outline: none;
@@ -114,6 +114,29 @@ header {
     border-radius: 10px;
     font-size: 16px;
     font-weight: 500;
+}
+
+.header-button:hover {
+    box-shadow: 0 0 20px 2px var(--white);
+    transition: box-shadow 0.2s ease
+}
+
+.header-button-mobile {
+    margin-bottom: 24px;
+    padding: 6px 20px;
+    border: none;
+    outline: none;
+    color: var(--black);
+    cursor: pointer;
+    position: relative;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.header-button-mobile:hover {
+    box-shadow: 0 0 20px 2px var(--white);
+    transition: box-shadow 0.2s ease
 }
 
 .nav-logo-link {
@@ -254,6 +277,8 @@ header {
     background-color: var(--black-tint);
     list-style: none;
     padding: 24px 0;
+    margin-left: 12px;
+    margin-right: 12px;
 }
 
 .single-section-row {

@@ -31,6 +31,9 @@ if (!empty($_POST)) {
     if ($_POST['old_password'] == "" or $_POST['new_password'] == "" or $_POST['confirm_new_password'] == "") {
         $error_message = "Please fill out all fields.";
         $errors_found++;
+    } elseif (!preg_match("/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/",$new_password)) {
+        $error_message = "Password must be 8 or more characters, a mix of uppercase and lowercase characters, a number and a special symbol.";
+        $errors_found++;
     } else if ($new_password != $confirm_new_password) {
         $error_message = "Password confirmation does not match the new password provided.";
         $errors_found++;
@@ -70,13 +73,13 @@ if (!empty($_POST)) {
             $query = "UPDATE users SET password = ? WHERE user_id = ?";
 
             $stmt = $conn->prepare($query);
-            $stmt->bind_param("s", $new_password);
+            $stmt->bind_param("ss", $hashed_password, $id);
 
             $stmt->execute();
 
             $stmt->close();
 
-            header("Leader: dashboard.php");
+            header("Location: dashboard.php");
         }
     }
 }
