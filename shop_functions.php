@@ -38,6 +38,10 @@ function clear_basket() {
     unset($_SESSION['basket']);
 }
 
+function place_order() {
+    header("Location: login.php?action=place_order");
+}
+
 if ($_GET['action'] == 'add_item') {
     $id = $_GET['id'];
     $stock = $_GET['stock'];

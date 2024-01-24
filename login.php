@@ -4,7 +4,57 @@ include("etc/connection.php");
 include("etc/validation.php");
 
 if (isset($_SESSION['id'])) {
-    header("Location: dashboard.php");
+    $id = $_SESSION['id'];
+
+    if (isset($_GET['action'])) {
+        $action = $_GET['action'];
+        $order_date = date('Y-m-d H:i:s');
+        $order_items = array();
+
+        if ($action == 'place_order') {
+            if(isset($_SESSION['basket'])) {
+                $order_total = 0;
+                foreach($_SESSION['basket'] as $key => $basket_item) {
+                    $item_id = $basket_item['item'];
+                    $item_quantity = $_SESSION['basket'][$key]['quantity'];
+
+                    $query = "SELECT * FROM items WHERE item_id = '$item_id'";
+                    $query_result = $conn->query($query);
+                    $query_result_array = mysqli_fetch_array($query_result);
+
+                    $new_stock = $query_result_array['in_stock'] - $item_quantity;
+
+                    $query = "UPDATE items SET in_stock = ? WHERE item_id = ?";
+
+                    $stmt = $conn->prepare($query);
+                    $stmt->bind_param("ss", $new_stock, $id);
+
+                    $stmt->execute();
+
+                    $stmt->close();
+
+                    $order_total += $query_result_array['price'];
+
+                    $order_items[] = $item_id;
+                }
+
+                $query = "INSERT INTO orders (order_user_id, order_total, order_date, order_items) VALUES (?, ?, ?, ?)";
+
+                $stmt = $conn->prepare($query);
+                $stmt->bind_param("ssss", $id, number_format($order_total, 2), $order_date, implode(',', $order_items));
+
+                $stmt->execute();
+
+                $stmt->close();
+            }
+
+            header("Location: shop_order_successful.php");
+        } else {
+            header("Location: dashboard.php");
+        }
+    } else {
+        header("Location: dashboard.php");
+    }
 }
 
 $error_message = NULL;
