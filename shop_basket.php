@@ -99,6 +99,7 @@ if ($item_count > 0) {
                                 $description = $row["description"];
                                 $price = $row["price"];
                                 $basket_total += $price;
+                                $stock = $row["stock"];
                                 $image_url = $row["image_url"];
 
                                 if (strlen($description) > 100) {
@@ -116,7 +117,7 @@ if ($item_count > 0) {
                                 echo("<p>Total: £" . number_format($price * $basket_item['quantity'], 2) . "<br>(£" . number_format($price, 2) . " Each)</p>");
                             echo("</div></a>");
 
-                            echo "<a href='shop_functions.php?action=add_item&id=$id'><p>Add One (+)</p></a>";
+                            echo "<a href='shop_functions.php?action=add_item&id=$id&stock=$stock'><p>Add One (+)</p></a>";
                             echo "<a href='shop_functions.php?action=remove_item&id=$id'><p>Remove One (-)</p></a>";
                             echo("<br>");
 

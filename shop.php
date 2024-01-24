@@ -126,7 +126,7 @@ include("etc/connection.php");
                         echo("<p>£" . number_format($price, 2) . " • $in_stock In Stock</p>");
                         echo("<br>");
                         echo "<button onclick=\"location.href='shop_view.php?id=$id'\">View Product</button>";
-                        echo "<button onclick=\"location.href='shop_functions.php?action=add_item&id=$id'\">Add To Basket</button>";
+                        echo "<button onclick=\"location.href='shop_functions.php?action=add_item&id=$id&stock=$in_stock'\">Add To Basket</button>";
                         echo("</div>");
                     }
                 }
