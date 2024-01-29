@@ -66,7 +66,7 @@ if (!isset($_SESSION['id'])) {
         <div class="single-section-row">
             <div class="single-section-column">
                 <h2>Customer Dashboard</h2>
-                <p>Here you can access your orders, bookings and much more.</p>
+                <p>Here you can access your orders, bookings and more.</p>
             </div>
         </div>
     </div>

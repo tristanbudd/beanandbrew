@@ -91,7 +91,7 @@
                 </div>
                 <div class="double-section-column">
                     <h2>Create Booking</h2>
-                    <p>Here you will be able to create bookings to visit one of our three restaurant locations. If you want to reserve a space click the link below, enter some simple contact information and your time of arrival and we will find you a place!</p>
+                    <p>Here you will be able to create bookings to visit one of our three restaurant locations. If you want to reserve a space click the link below, enter some simple contact information and your time of arrival, and we will find you a place!</p>
                     <br>
                     <button onclick="location.href='bookings.php'">Create Booking</button>
                 </div>
