@@ -14,7 +14,7 @@ if (isset($_SESSION['id'])) {
         if ($action == 'place_order') {
             if(isset($_SESSION['basket'])) {
                 $order_total = 0;
-                foreach($_SESSION['basket'] as $key => $basket_item) {
+                foreach ($_SESSION['basket'] as $key => $basket_item) {
                     $item_id = $basket_item['item'];
                     $item_quantity = $_SESSION['basket'][$key]['quantity'];
 
@@ -22,12 +22,13 @@ if (isset($_SESSION['id'])) {
                     $query_result = $conn->query($query);
                     $query_result_array = mysqli_fetch_array($query_result);
 
-                    $new_stock = $query_result_array['in_stock'] - $item_quantity;
+                    $new_stock = $query_result_array['in_stock'];
+                    $new_stock = $new_stock - $item_quantity;
 
                     $query = "UPDATE items SET in_stock = ? WHERE item_id = ?";
 
                     $stmt = $conn->prepare($query);
-                    $stmt->bind_param("ss", $new_stock, $id);
+                    $stmt->bind_param("ss", $new_stock, $item_id);
 
                     $stmt->execute();
 
@@ -35,7 +36,7 @@ if (isset($_SESSION['id'])) {
 
                     $order_total += $query_result_array['price'];
 
-                    $order_items[] = $item_id;
+                    $order_items[] = $item_id . ':' . $item_quantity;
                 }
 
                 $query = "INSERT INTO orders (order_user_id, order_total, order_date, order_items) VALUES (?, ?, ?, ?)";
@@ -46,6 +47,8 @@ if (isset($_SESSION['id'])) {
                 $stmt->execute();
 
                 $stmt->close();
+
+                unset($_SESSION['basket']);
             }
 
             header("Location: shop_order_successful.php");
@@ -109,7 +112,58 @@ if (!empty($_POST)) {
             if (mysqli_num_rows($query_result) > 0) {
                 $query_result_table = mysqli_fetch_array($query_result);
                 $_SESSION['id'] = $query_result_table['user_id'];
-                header("location: dashboard.php");
+                if (isset($_GET['action'])) {
+                    $action = $_GET['action'];
+                    $order_date = date('Y-m-d H:i:s');
+                    $order_items = array();
+
+                    if ($action == 'place_order') {
+                        if(isset($_SESSION['basket'])) {
+                            $order_total = 0;
+                            foreach ($_SESSION['basket'] as $key => $basket_item) {
+                                $item_id = $basket_item['item'];
+                                $item_quantity = $_SESSION['basket'][$key]['quantity'];
+
+                                $query = "SELECT * FROM items WHERE item_id = '$item_id'";
+                                $query_result = $conn->query($query);
+                                $query_result_array = mysqli_fetch_array($query_result);
+
+                                $new_stock = $query_result_array['in_stock'];
+                                $new_stock = $new_stock - $item_quantity;
+
+                                $query = "UPDATE items SET in_stock = ? WHERE item_id = ?";
+
+                                $stmt = $conn->prepare($query);
+                                $stmt->bind_param("ss", $new_stock, $item_id);
+
+                                $stmt->execute();
+
+                                $stmt->close();
+
+                                $order_total += $query_result_array['price'];
+
+                                $order_items[] = $item_id . ':' . $item_quantity;
+                            }
+
+                            $query = "INSERT INTO orders (order_user_id, order_total, order_date, order_items) VALUES (?, ?, ?, ?)";
+
+                            $stmt = $conn->prepare($query);
+                            $stmt->bind_param("ssss", $id, number_format($order_total, 2), $order_date, implode(', ', $order_items));
+
+                            $stmt->execute();
+
+                            $stmt->close();
+
+                            unset($_SESSION['basket']);
+                        }
+
+                        header("Location: shop_order_successful.php");
+                    } else {
+                        header("Location: dashboard.php");
+                    }
+                } else {
+                    header("Location: dashboard.php");
+                }
             } else {
                 echo "<script> alert('An error occurred obtaining your Session ID, please try again.'); </script>";
                 header("location: login.php");

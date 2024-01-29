@@ -6,9 +6,7 @@ function add_to_basket($id, $stock) {
     if(isset($_SESSION['basket'])) {
         foreach($_SESSION['basket'] as $key => $basket_item) {
             if($basket_item['item'] == $id) {
-                if ($stock > ($_SESSION['basket'][$key]['quantity'] + 1)) {
-                    $_SESSION['basket'][$key]['quantity']++;
-                }
+                $_SESSION['basket'][$key]['quantity']++;
                 return;
             }
         }

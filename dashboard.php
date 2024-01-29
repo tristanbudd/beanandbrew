@@ -1,8 +1,12 @@
 <?php
 session_start();
 
+include("etc/connection.php");
+
 if (!isset($_SESSION['id'])) {
     header("Location: login.php");
+} else {
+    $user_id = $_SESSION['id'];
 }
 ?>
 
@@ -57,7 +61,131 @@ if (!isset($_SESSION['id'])) {
     </nav>
 </header>
 
-<br><br><br>
+<div class="single-section">
+    <div class="container">
+        <div class="single-section-row">
+            <div class="single-section-column">
+                <h2>Customer Dashboard</h2>
+                <p>Here you can access your orders, bookings and much more.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="double-section">
+    <div class="container">
+        <div class="double-section-row">
+            <div class="double-section-column">
+                <h2>Your Pre-Orders:</h2>
+                <?php
+                $query = "SELECT * FROM orders WHERE order_user_id = '$user_id'";
+                $query_result = $conn->query($query);
+
+                foreach($query_result as $row) {
+                    $order_id = $row["order_id"];
+                    $order_total = $row["order_total"];
+                    $order_date = $row["order_date"];
+                    $order_status = $row["order_status"];
+                    $order_items = $row["order_items"];
+
+                    if ($order_status == 0) {
+                        $order_status = "Order Received";
+                    } else if ($order_status == 1) {
+                        $order_status = "Order Preparing";
+                    } else if ($order_status == 2) {
+                        $order_status = "Order Completed";
+                    } else {
+                        $order_status = "Unknown";
+                    }
+
+                    $current_date = date("Y-m-d");
+                    if ($order_date >= $current_date) {
+                        echo("<div class='lesson-block'>");
+                        echo("<h2>Order ID: $order_id</h2>");
+                        echo("<p>Order Status: $order_status</p>");
+                        $items = explode(",", $order_items);
+
+                        echo("<p>Order Items:</p>");
+
+                        foreach ($items as $item) {
+                            $item_details = explode(":", $item);
+                            $item_id = $item_details[0];
+                            $quantity = $item_details[1];
+
+                            $quantity = $quantity . "x";
+                            $query = "SELECT * FROM items WHERE item_id = '$item_id'";
+                            $query_result = $conn->query($query);
+                            $query_result_array = mysqli_fetch_array($query_result);
+
+                            $item_name = $query_result_array['name'];
+                            echo("<p>$quantity $item_name</p>");
+                        }
+
+                        echo("<br>");
+                        echo("<p>Order Total: £" . number_format($order_total, 2));
+                        echo("<p>Ordered On: $order_date</p>");
+                        echo("</div>");
+                    }
+                }
+                ?>
+            </div>
+            <div class="double-section-column">
+                <h2>Previous Orders:</h2>
+                <?php
+                $query = "SELECT * FROM orders WHERE order_user_id = '$user_id'";
+                $query_result = $conn->query($query);
+
+                foreach($query_result as $row) {
+                    $order_id = $row["order_id"];
+                    $order_total = $row["order_total"];
+                    $order_date = $row["order_date"];
+                    $order_status = $row["order_status"];
+                    $order_items = $row["order_items"];
+
+                    if ($order_status == 0) {
+                        $order_status = "Order Received";
+                    } else if ($order_status == 1) {
+                        $order_status = "Order Preparing";
+                    } else if ($order_status == 2) {
+                        $order_status = "Order Completed";
+                    } else {
+                        $order_status = "Unknown";
+                    }
+
+                    $current_date = date("Y-m-d");
+                    if ($order_date < $current_date) {
+                        echo("<div class='lesson-block'>");
+                        echo("<h2>Order ID: $order_id</h2>");
+                        echo("<p>Order Status: $order_status</p>");
+                        $items = explode(",", $order_items);
+
+                        echo("<p>Order Items:</p>");
+
+                        foreach ($items as $item) {
+                            $item_details = explode(":", $item);
+                            $item_id = $item_details[0];
+                            $quantity = $item_details[1];
+
+                            $quantity = $quantity . "x";
+                            $query = "SELECT * FROM items WHERE item_id = '$item_id'";
+                            $query_result = $conn->query($query);
+                            $query_result_array = mysqli_fetch_array($query_result);
+
+                            $item_name = $query_result_array['name'];
+                            echo("<p>$quantity $item_name</p>");
+                        }
+
+                        echo("<br>");
+                        echo("<p>Order Total: £" . number_format($order_total, 2));
+                        echo("<p>Ordered On: $order_date</p>");
+                        echo("</div>");
+                    }
+                }
+                ?>
+            </div>
+        </div>
+    </div>
+</div>
 
 <footer class="footer">
     <div class="container">
