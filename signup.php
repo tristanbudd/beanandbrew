@@ -68,7 +68,7 @@ if (!empty($_POST)) {
             'password' => ''
         );
 
-        $account_created = date('Y-m-d H:i:s');
+        $account_created = date('Y-m-d');
 
         $hash_options = [
             'cost' => 12

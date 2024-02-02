@@ -87,8 +87,9 @@ if (!isset($_SESSION['id'])) {
                     $seats = $row["seats"];
                     $booking_date = $row["booking_date"];
                     $booking_date_created = $row["booking_date_created"];
-                    $booking_date = $row["booking_type"];
-                    $order_total = $row["order_total"];
+                    $booking_type = $row["booking_type"];
+
+                    $restaurant = ucfirst($restaurant);
 
                     $current_date = date("Y-m-d");
                     if ($booking_date >= $current_date) {
@@ -96,12 +97,10 @@ if (!isset($_SESSION['id'])) {
                         echo("<h2>Booking ID: $booking_id</h2>");
                         echo("<p>Booked For: $booking_date</p>");
                         echo("<p>Date Booked: $booking_date_created</p>");
+                        echo("<p>Booking Type: $booking_type</p>");
                         echo("<br>");
                         echo("<p>Spaces Booked: $seats</p>");
                         echo("<p>Restaurant: $restaurant</p>");
-                        if ($order_total > 0) {
-                            echo("<p>Order Total: £" . number_format($order_total, 2));
-                        }
                         echo("</div>");
                     }
                 }
@@ -119,8 +118,9 @@ if (!isset($_SESSION['id'])) {
                     $seats = $row["seats"];
                     $booking_date = $row["booking_date"];
                     $booking_date_created = $row["booking_date_created"];
-                    $booking_date = $row["booking_type"];
-                    $order_total = $row["order_total"];
+                    $booking_type = $row["booking_type"];
+
+                    $restaurant = ucfirst($restaurant);
 
                     $current_date = date("Y-m-d");
                     if ($booking_date < $current_date) {
@@ -128,12 +128,10 @@ if (!isset($_SESSION['id'])) {
                         echo("<h2>Booking ID: $booking_id</h2>");
                         echo("<p>Booked For: $booking_date</p>");
                         echo("<p>Date Booked: $booking_date_created</p>");
+                        echo("<p>Booking Type: $booking_type</p>");
                         echo("<br>");
                         echo("<p>Spaces Booked: $seats</p>");
                         echo("<p>Restaurant: $restaurant</p>");
-                        if ($order_total > 0) {
-                            echo("<p>Order Total: £" . number_format($order_total, 2));
-                        }
                         echo("</div>");
                     }
                 }

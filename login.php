@@ -8,7 +8,7 @@ if (isset($_SESSION['id'])) {
 
     if (isset($_GET['action'])) {
         $action = $_GET['action'];
-        $order_date = date('Y-m-d H:i:s');
+        $order_date = date('Y-m-d');
         $order_items = array();
 
         if ($action == 'place_order') {
@@ -114,7 +114,7 @@ if (!empty($_POST)) {
                 $_SESSION['id'] = $query_result_table['user_id'];
                 if (isset($_GET['action'])) {
                     $action = $_GET['action'];
-                    $order_date = date('Y-m-d H:i:s');
+                    $order_date = date('Y-m-d');
                     $order_items = array();
 
                     if ($action == 'place_order') {

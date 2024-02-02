@@ -94,7 +94,7 @@ include("etc/connection.php");
                                 $available_spaces = $row["available_spaces"];
 
                                 if ($available_spaces > 0) {
-                                    echo("<a href='login.php?action=book_lesson&id=$id'><div class='lesson-block'>");
+                                    echo("<a href='lesson_book.php?lesson_id=$id'><div class='lesson-block'>");
                                 } else {
                                     echo("<div class='lesson-block-red'>");
                                 }
