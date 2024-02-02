@@ -20,6 +20,10 @@ body {
     background-color: var(--black);
 }
 
+label {
+    color: var(--white);
+}
+
 :root {
     --black: #000000;
     --black-tint: #090909;

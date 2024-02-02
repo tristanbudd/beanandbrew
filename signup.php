@@ -152,6 +152,7 @@ if (!empty($_POST)) {
     <div class="container">
         <div class="single-section-row">
             <div class="single-section-column">
+                <br><br>
                 <h2>Sign Up</h2>
                 <p>Create an account for Bean & Brew for free.</p>
                 <br>
@@ -218,6 +219,7 @@ if (!empty($_POST)) {
                         <p>Already have an account? Click <a href="login.php">Here</a> to log in.</p>
                     </form>
                 </div>
+                <br><br>
             </div>
         </div>
     </div>

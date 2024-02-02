@@ -76,6 +76,77 @@ if (!isset($_SESSION['id'])) {
     <div class="container">
         <div class="double-section-row">
             <div class="double-section-column">
+                <h2>Your Bookings:</h2>
+                <?php
+                $query = "SELECT * FROM bookings WHERE booking_user_id = '$user_id'";
+                $query_result = $conn->query($query);
+
+                foreach($query_result as $row) {
+                    $booking_id = $row["booking_id"];
+                    $restaurant = $row["restaurant"];
+                    $seats = $row["seats"];
+                    $booking_date = $row["booking_date"];
+                    $booking_date_created = $row["booking_date_created"];
+                    $booking_date = $row["booking_type"];
+                    $order_total = $row["order_total"];
+
+                    $current_date = date("Y-m-d");
+                    if ($booking_date >= $current_date) {
+                        echo("<div class='lesson-block'>");
+                        echo("<h2>Booking ID: $booking_id</h2>");
+                        echo("<p>Booked For: $booking_date</p>");
+                        echo("<p>Date Booked: $booking_date_created</p>");
+                        echo("<br>");
+                        echo("<p>Spaces Booked: $seats</p>");
+                        echo("<p>Restaurant: $restaurant</p>");
+                        if ($order_total > 0) {
+                            echo("<p>Order Total: £" . number_format($order_total, 2));
+                        }
+                        echo("</div>");
+                    }
+                }
+                ?>
+            </div>
+            <div class="double-section-column">
+                <h2>Previous Bookings:</h2>
+                <?php
+                $query = "SELECT * FROM bookings WHERE booking_user_id = '$user_id'";
+                $query_result = $conn->query($query);
+
+                foreach($query_result as $row) {
+                    $booking_id = $row["booking_id"];
+                    $restaurant = $row["restaurant"];
+                    $seats = $row["seats"];
+                    $booking_date = $row["booking_date"];
+                    $booking_date_created = $row["booking_date_created"];
+                    $booking_date = $row["booking_type"];
+                    $order_total = $row["order_total"];
+
+                    $current_date = date("Y-m-d");
+                    if ($booking_date < $current_date) {
+                        echo("<div class='lesson-block'>");
+                        echo("<h2>Booking ID: $booking_id</h2>");
+                        echo("<p>Booked For: $booking_date</p>");
+                        echo("<p>Date Booked: $booking_date_created</p>");
+                        echo("<br>");
+                        echo("<p>Spaces Booked: $seats</p>");
+                        echo("<p>Restaurant: $restaurant</p>");
+                        if ($order_total > 0) {
+                            echo("<p>Order Total: £" . number_format($order_total, 2));
+                        }
+                        echo("</div>");
+                    }
+                }
+                ?>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="double-section">
+    <div class="container">
+        <div class="double-section-row">
+            <div class="double-section-column">
                 <h2>Your Pre-Orders:</h2>
                 <?php
                 $query = "SELECT * FROM orders WHERE order_user_id = '$user_id'";
@@ -182,6 +253,19 @@ if (!isset($_SESSION['id'])) {
                     }
                 }
                 ?>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="single-section">
+    <div class="container">
+        <div class="single-section-row">
+            <div class="single-section-column">
+                <h2>Account Settings</h2>
+                <p>Here you can change various account settings.</p>
+                <br>
+                <button onclick="location.href='changepassword.php'">Change Password</button>
             </div>
         </div>
     </div>
