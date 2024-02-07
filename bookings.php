@@ -2,31 +2,17 @@
 session_start();
 include("etc/connection.php");
 
-if (isset($_GET['lesson_id'])) {
-    $lesson_id = $_GET['lesson_id'];
-} else {
-    header("Location: lessons.php");
-}
-
 if (!isset($_SESSION['id'])) {
     header("Location: login.php");
 } else {
     $user_id = $_SESSION['id'];
 }
 
-$query = "SELECT * FROM lessons WHERE lesson_id = '$lesson_id'";
-$query_result = mysqli_query($conn , $query) or die("MySQL Error: " . mysqli_error($conn));
-if (mysqli_num_rows($query_result) > 0) {
-    $result_array = mysqli_fetch_array($query_result);
-    $seats_available = $result_array['available_spaces'];
-} else {
-    header("Location: lessons.php");
-}
-
 $error_message = NULL;
 $errors_found = 0;
 $current_date = date('Y-m-d');
-$booking_type = "Lesson";
+$booking_type = "In-Person Booking";
+$seats_available = 32;
 
 $display = array(
     'seats' => 0,
@@ -46,8 +32,8 @@ if (!empty($_POST)) {
     if ($_POST['seats'] == "" or $_POST['location'] == "default") {
         $error_message = "Please fill out all fields.";
         $errors_found++;
-    } else if ($_POST['seats'] < 1 or $_POST['seats'] > $seats_available) {
-        $error_message = "Seats must be more than 0 and less than the amount of spaces available for the lesson.";
+    } else if ($_POST['seats'] < 1) {
+        $error_message = "Seats must be more than 0.";
         $errors_found++;
     } else if (!isset($_POST['date']) or $_POST['date'] < $current_date) {
         $error_message = "You must select a date in the future.";
@@ -68,7 +54,7 @@ if (!empty($_POST)) {
 
         $stmt->close();
 
-        header("Location: lesson_book_successful.php");
+        header("Location: bookings_successful.php");
     }
 }
 ?>
@@ -76,7 +62,7 @@ if (!empty($_POST)) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Bean & Brew - Bookings</title>
+    <title>Bean & Brew - Book Lesson</title>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -111,13 +97,19 @@ if (!empty($_POST)) {
 
     <nav class="nav-main">
         <ul class="nav-links">
-            <button class="header-button" onclick="location.href='index.php'">Return To Homepage</button>
+            <li><a href="index.php">Home</a></li>
+            <li><a href="shop.php">Pre-Order Coffee</a></li>
+            <li>Create Booking<div class="nav-selected"></div></li>
+            <li><a href="lessons.php">View Lessons</a></li>
         </ul>
     </nav>
 
     <nav class="mobile-nav">
         <ul class="nav-main-mobile">
-            <button class="header-button" onclick="location.href='index.php'">Return To Homepage</button>
+            <li class="nav-deco">Create Booking<div class="nav-selected"></div></li>
+            <li class="nav-deco"><a href="index.php">Home</a></li>
+            <li class="nav-deco"><a href="bookings.php">Pre-Order Coffee</a></li>
+            <li class="nav-deco"><a href="lessons.php">View Lessons</a></li>
         </ul>
     </nav>
 </header>
@@ -127,36 +119,11 @@ if (!empty($_POST)) {
         <div class="single-section-row">
             <div class="single-section-column">
                 <br><br>
-                <h2>Booking A Lesson</h2>
-                <p>Please enter details to book this lesson.</p>
-                <br>
-                <?php
-                $query = "SELECT * FROM lessons WHERE lesson_id = '$lesson_id'";
-                $query_result = $conn->query($query);
-                $row = mysqli_fetch_array($query_result);
-
-                $title = $row["title"];
-                $description = $row["description"];
-                $date = $row["date"];
-                $duration = $row["duration"];
-                $available_spaces = $row["available_spaces"];
-
-                echo("<div class='lesson-block'>");
-
-                echo("<h3>$title</h3>");
-                echo("<p>$description</p>");
-                echo("<p><b>Date:</b> $date</p>");
-                echo("<p><b>Duration:</b> $duration</p>");
-                echo("<p><b>Available Spaces:</b> $available_spaces</p>");
-
-                echo("</div></a>");
-                ?>
+                <h2>Booking Seats</h2>
+                <p>Book seats at one of our restaurant locations.</p>
                 <br>
                 <div class="login-form">
                     <form method="post" action="">
-                        <label class="form-label" for="seats">How many spaces do you want?</label>
-                        <input class="form-input" type="number" name="seats" id="seats" min="0" max="<?php echo $seats_available ?>" value="<?php echo $display['seats']; ?>">
-
                         <label class="form-label" for="location">At which restaurant location?</label>
                         <select class="form-input" name="location" id="location">
                             <option value="default">Please select an option...</option>
@@ -165,7 +132,13 @@ if (!empty($_POST)) {
                             <option value="knaresboroughcastle">Knaresborough Castle</option>
                         </select>
 
-                        <label class="form-label" for="date">What day do you want the lesson?</label>
+                        <label class="form-label" id=""><a onclick="">Check Availability...</a></label>
+                        <br>
+
+                        <label class="form-label" for="seats">How many seats do you want to book?</label>
+                        <input class="form-input" type="number" name="seats" id="seats" min="0" max="<?php echo $seats_available ?>" value="<?php echo $display['seats']; ?>">
+
+                        <label class="form-label" for="date">What day do you want to arrive?</label>
                         <input class="form-input" type="date" name="date" id="date" min="<?php echo $current_date ?>">
 
                         <br>
@@ -178,8 +151,7 @@ if (!empty($_POST)) {
                             ?>
                         </div>
 
-                        <button class="form-button" type="submit" value="submit">Book Lesson</button>
-                        <p>Not for you? Click <a href="lessons.php">Here</a> to choose a different lesson.</p>
+                        <button class="form-button" type="submit" value="submit">Book Seat(s)</button>
                     </form>
                 </div>
                 <br><br>
