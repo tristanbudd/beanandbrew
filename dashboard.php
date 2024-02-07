@@ -287,7 +287,7 @@ if (!isset($_SESSION['id'])) {
             </a>
         </li>
         <li>
-            <a href="logout.php">
+            <a href="etc/logout.php">
                 <i class="fa fa-power-off fa-2x"></i>
                 <span class="nav-text">
                             Log Out
