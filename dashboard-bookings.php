@@ -44,31 +44,77 @@ if (!isset($_SESSION['id'])) {
         <div class="container">
             <div class="single-section-row">
                 <div class="single-section-column">
-                    <h2>Customer Dashboard</h2>
-                    <p>Here you can access your orders, bookings and more.</p>
+                    <h2>Bookings</h2>
+                    <p>Here you can see all of your upcoming bookings and expired bookings.</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="single-section">
+    <div class="double-section">
         <div class="container">
-            <div class="single-section-row">
-                <div class="single-section-column">
-                    <p>Select A TAB To Continue</p>
-                </div>
-            </div>
-        </div>
-    </div>
+            <div class="double-section-row">
+                <div class="double-section-column">
+                    <h2>Your Bookings:</h2>
+                    <?php
+                    $query = "SELECT * FROM bookings WHERE booking_user_id = '$user_id'";
+                    $query_result = $conn->query($query);
 
-    <div class="single-section">
-        <div class="container">
-            <div class="single-section-row">
-                <div class="single-section-column">
-                    <h2>Account Settings</h2>
-                    <p>Here you can change various account settings.</p>
-                    <br>
-                    <button onclick="location.href='changepassword.php'">Change Password</button>
+                    foreach($query_result as $row) {
+                        $booking_id = $row["booking_id"];
+                        $restaurant = $row["restaurant"];
+                        $seats = $row["seats"];
+                        $booking_date = $row["booking_date"];
+                        $booking_date_created = $row["booking_date_created"];
+                        $booking_type = $row["booking_type"];
+
+                        $restaurant = ucfirst($restaurant);
+
+                        $current_date = date("Y-m-d");
+                        if ($booking_date >= $current_date) {
+                            echo("<div class='lesson-block'>");
+                            echo("<h2>Booking ID: $booking_id</h2>");
+                            echo("<p>Booked For: $booking_date</p>");
+                            echo("<p>Date Booked: $booking_date_created</p>");
+                            echo("<p>Booking Type: $booking_type</p>");
+                            echo("<br>");
+                            echo("<p>Spaces Booked: $seats</p>");
+                            echo("<p>Restaurant: $restaurant</p>");
+                            echo("</div>");
+                        }
+                    }
+                    ?>
+                </div>
+                <div class="double-section-column">
+                    <h2>Expired Bookings:</h2>
+                    <?php
+                    $query = "SELECT * FROM bookings WHERE booking_user_id = '$user_id'";
+                    $query_result = $conn->query($query);
+
+                    foreach($query_result as $row) {
+                        $booking_id = $row["booking_id"];
+                        $restaurant = $row["restaurant"];
+                        $seats = $row["seats"];
+                        $booking_date = $row["booking_date"];
+                        $booking_date_created = $row["booking_date_created"];
+                        $booking_type = $row["booking_type"];
+
+                        $restaurant = ucfirst($restaurant);
+
+                        $current_date = date("Y-m-d");
+                        if ($booking_date < $current_date) {
+                            echo("<div class='lesson-block'>");
+                            echo("<h2>Booking ID: $booking_id</h2>");
+                            echo("<p>Booked For: $booking_date</p>");
+                            echo("<p>Date Booked: $booking_date_created</p>");
+                            echo("<p>Booking Type: $booking_type</p>");
+                            echo("<br>");
+                            echo("<p>Spaces Booked: $seats</p>");
+                            echo("<p>Restaurant: $restaurant</p>");
+                            echo("</div>");
+                        }
+                    }
+                    ?>
                 </div>
             </div>
         </div>
