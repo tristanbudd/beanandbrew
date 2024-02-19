@@ -69,6 +69,7 @@ if (!isset($_SESSION['id'])) {
                     <p>Here you can change various account settings.</p>
                     <br>
                     <button onclick="location.href='changepassword.php'">Change Password</button>
+                    <button onclick="location.href='changeusername.php'">Change Username</button>
                 </div>
             </div>
         </div>
