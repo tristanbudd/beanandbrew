@@ -124,8 +124,8 @@
                     <br>
                     <button onclick="location.href='login.php'">Log In</button>
                     <button onclick="location.href='signup.php'">Sign Up</button>
-
-                    <div id="TA_restaurantWidgetWhite36" class="TA_restaurantWidgetWhite"><ul id="CU3Tes7" class="TA_links 9jSwQNvIeYj"><li id="xaZ2URb" class="S7fpMffxE"><a target="_blank" href="https://www.tripadvisor.com/"><img src="https://www.tripadvisor.com/img/cdsi/img2/branding/v2/Tripadvisor_lockup_horizontal_registered-24177-2.svg" alt="Tripadvisor"/></a></li></ul></div><script async src="https://www.jscache.com/wejs?wtype=restaurantWidgetWhite&amp;uniq=36&amp;locationId=19063205&amp;lang=en_US&amp;display_version=2" data-loadtrk onload="this.loadtrk=true"></script>
+                    <br>
+                    <div style="width: 100%;text-align: center;display: flex;align-items: center;flex-direction: row;flex-wrap: wrap;align-content: center;justify-content: center;" id="TA_restaurantWidgetWhite36" class="TA_restaurantWidgetWhite"><ul id="CU3Tes7" class="TA_links 9jSwQNvIeYj"><li id="xaZ2URb" class="S7fpMffxE"><a target="_blank" href="https://www.tripadvisor.com/"><img src="https://www.tripadvisor.com/img/cdsi/img2/branding/v2/Tripadvisor_lockup_horizontal_registered-24177-2.svg" alt="Tripadvisor"/></a></li></ul></div><script async src="https://www.jscache.com/wejs?wtype=restaurantWidgetWhite&amp;uniq=36&amp;locationId=19063205&amp;lang=en_US&amp;display_version=2" data-loadtrk onload="this.loadtrk=true"></script>
                 </div>
             </div>
         </div>
