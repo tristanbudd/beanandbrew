@@ -40,7 +40,7 @@ if (!isset($_SESSION['id'])) {
 </head>
 <body>
 <div class="area">
-    <div class="single-section">
+    <div class="single-section" style="background-color: #000000;">
         <div class="container">
             <div class="single-section-row">
                 <div class="single-section-column">
@@ -51,7 +51,7 @@ if (!isset($_SESSION['id'])) {
         </div>
     </div>
 
-    <div class="single-section">
+    <div class="single-section" style="background-color: #000000;">
         <div class="container">
             <div class="single-section-row">
                 <div class="single-section-column">
@@ -61,7 +61,7 @@ if (!isset($_SESSION['id'])) {
         </div>
     </div>
 
-    <div class="single-section">
+    <div class="single-section" style="background-color: #000000;">
         <div class="container">
             <div class="single-section-row">
                 <div class="single-section-column">
