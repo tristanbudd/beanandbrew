@@ -1,8 +1,10 @@
 <?php
+# Including connection information, validation and starting the session.
 session_start();
 include("etc/connection.php");
 include("etc/validation.php");
 
+# If Session ID is not set, redirect to the login page.
 if (!isset($_SESSION['id'])) {
     header("Location: login.php");
 } else {
@@ -12,6 +14,7 @@ if (!isset($_SESSION['id'])) {
 $error_message = NULL;
 $errors_found = 0;
 
+# Saving data so that it's not lost on page refresh.
 $display = array(
     'old_password' => '',
     'new_password' => ''
@@ -28,6 +31,7 @@ if (!empty($_POST)) {
     $new_password = $_POST['new_password'];
     $confirm_new_password = $_POST['confirm_new_password'];
 
+    # Collecting and validating the data from the form.
     if ($_POST['old_password'] == "" or $_POST['new_password'] == "" or $_POST['confirm_new_password'] == "") {
         $error_message = "Please fill out all fields.";
         $errors_found++;
@@ -50,6 +54,7 @@ if (!empty($_POST)) {
         header("Location: login.php");
     }
 
+    # If there are no errors, proceed to the next section.
     if ($errors_found == 0) {
         $row = mysqli_fetch_array($query_result);
         $hash = $row['password'];
@@ -64,6 +69,7 @@ if (!empty($_POST)) {
                 'new_password' => ''
             );
 
+            # Encrypting the password and saving it to the database.
             $hash_options = [
                 'cost' => 12
             ];

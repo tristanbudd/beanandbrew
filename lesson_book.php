@@ -1,13 +1,16 @@
 <?php
+# Including connection information and starting the session.
 session_start();
 include("etc/connection.php");
 
+# If Lesson ID is not set, redirect to the lessons page.
 if (isset($_GET['lesson_id'])) {
     $lesson_id = $_GET['lesson_id'];
 } else {
     header("Location: lessons.php");
 }
 
+# If Session ID is not set, redirect to the login page.
 if (!isset($_SESSION['id'])) {
     header("Location: login.php");
 } else {

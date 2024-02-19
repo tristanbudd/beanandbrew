@@ -1,4 +1,5 @@
 <?php
+# Including connection information and starting the session.
 session_start();
 include("etc/connection.php");
 

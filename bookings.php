@@ -1,7 +1,9 @@
 <?php
+# Including connection information and starting the session.
 session_start();
 include("etc/connection.php");
 
+# If Session ID is not set, redirect to the login page.
 if (!isset($_SESSION['id'])) {
     header("Location: login.php");
 } else {
@@ -14,6 +16,7 @@ $current_date = date('Y-m-d');
 $booking_type = "In-Person Booking";
 $seats_available = 32;
 
+# Saving data so that it's not lost on page refresh.
 $display = array(
     'seats' => 0,
 );
@@ -29,6 +32,7 @@ if (!empty($_POST)) {
     $location = $_POST['location'];
     $booking_date = $_POST['date'];
 
+    # Collecting and validating the data from the form.
     if ($_POST['seats'] == "" or $_POST['location'] == "default") {
         $error_message = "Please fill out all fields.";
         $errors_found++;

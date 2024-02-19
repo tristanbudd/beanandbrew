@@ -1,6 +1,8 @@
 <?php
+# Including connection information.
 session_start();
 
+# If Session ID is not set, redirect to the login page.
 if (!isset($_SESSION['id'])) {
     header("Location: login.php");
 }

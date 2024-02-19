@@ -1,4 +1,5 @@
 <?php
+# Including connection information, validation and starting the session.
 session_start();
 include("etc/connection.php");
 include("etc/validation.php");
@@ -6,6 +7,7 @@ include("etc/validation.php");
 $error_message = NULL;
 $errors_found = 0;
 
+# Saving data so that it's not lost on page refresh.
 $display = array(
     'username' => '',
     'email' => '',
@@ -24,6 +26,7 @@ if (!empty($_POST)) {
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
 
+    # Collecting and validating the data from the form.
     if ($_POST['username'] == "" or $_POST['email'] == "" or $_POST['password'] == "") {
         $error_message = "Please fill out all fields.";
         $errors_found++;
@@ -61,6 +64,7 @@ if (!empty($_POST)) {
         $errors_found++;
     }
 
+    # If there are no errors, proceed to the next section.
     if ($errors_found == 0) {
         $display = array(
             'username' => '',
@@ -70,6 +74,7 @@ if (!empty($_POST)) {
 
         $account_created = date('Y-m-d');
 
+        # Encrypting the password and saving it to the database.
         $hash_options = [
             'cost' => 12
         ];

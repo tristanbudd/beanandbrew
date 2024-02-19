@@ -1,8 +1,9 @@
 <?php
+# Including connection information and starting the session.
 session_start();
-
 include("etc/connection.php");
 
+# If Session ID is not set, redirect to the login page.
 if (!isset($_SESSION['id'])) {
     header("Location: login.php");
 } else {

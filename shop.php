@@ -1,4 +1,5 @@
 <?php
+# Including connection information.
 include("etc/connection.php");
 ?>
 

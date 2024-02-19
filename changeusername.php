@@ -1,8 +1,10 @@
 <?php
+# Including connection information, validation and starting the session.
 session_start();
 include("etc/connection.php");
 include("etc/validation.php");
 
+# If Session ID is not set, redirect to the login page.
 if (!isset($_SESSION['id'])) {
     header("Location: login.php");
 } else {
@@ -12,6 +14,7 @@ if (!isset($_SESSION['id'])) {
 $error_message = NULL;
 $errors_found = 0;
 
+# Saving data so that it's not lost on page refresh.
 $display = array(
     'old_password' => '',
     'new_username' => ''
@@ -27,6 +30,7 @@ if (!empty($_POST)) {
     $old_password = $_POST['old_password'];
     $new_username = $_POST['new_username'];
 
+    # Collecting and validating the data from the form.
     if ($_POST['old_password'] == "" or $_POST['new_password'] == "" or $_POST['confirm_new_password'] == "") {
         $error_message = "Please fill out all fields.";
         $errors_found++;
@@ -51,31 +55,24 @@ if (!empty($_POST)) {
         header("Location: login.php");
     }
 
+    # If there are no errors, proceed to the next section.
     if ($errors_found == 0) {
-        $row = mysqli_fetch_array($query_result);
-        $hash = $row['password'];
-        if (!password_verify($old_password, $hash)) {
-            $error_message = "Old password is invalid, please try again...";
-            $errors_found++;
-        }
+        $display = array(
+            'old_password' => '',
+            'new_username' => ''
+        );
 
-        if ($errors_found == 0) {
-            $display = array(
-                'old_password' => '',
-                'new_username' => ''
-            );
+        # Save the updated username to database.
+        $query = "UPDATE users SET username = ? WHERE user_id = ?";
 
-            $query = "UPDATE users SET username = ? WHERE user_id = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("ss", $new_username, $id);
 
-            $stmt = $conn->prepare($query);
-            $stmt->bind_param("ss", $new_username, $id);
+        $stmt->execute();
 
-            $stmt->execute();
+        $stmt->close();
 
-            $stmt->close();
-
-            header("Location: dashboard.php");
-        }
+        header("Location: dashboard.php");
     }
 }
 ?>

@@ -1,4 +1,5 @@
 <?php
+# Including connection information, validation and starting the session.
 session_start();
 include("etc/connection.php");
 include("etc/validation.php");
@@ -63,6 +64,7 @@ if (isset($_SESSION['id'])) {
 $error_message = NULL;
 $errors_found = 0;
 
+# Saving data so that it's not lost on page refresh.
 $display = array(
     'email' => '',
     'password' => ''
@@ -78,6 +80,7 @@ if (!empty($_POST)) {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
+    # Collecting and validating the data from the form.
     if ($_POST['email'] == "" or $_POST['password'] == "") {
         $error_message = "Please fill out all fields.";
         $errors_found++;
@@ -86,6 +89,7 @@ if (!empty($_POST)) {
     $email = clean_input($email);
     $password = clean_input($password);
 
+    # Checking no accounts already exist under this email.
     $query = "SELECT * FROM users WHERE email = '$email'";
     $query_result = mysqli_query($conn , $query) or die("MySQL Error: " . mysqli_error($conn));
     if (!mysqli_num_rows($query_result) > 0) {
@@ -93,6 +97,7 @@ if (!empty($_POST)) {
         $errors_found++;
     }
 
+    # If there are no errors, proceed to the next section.
     if ($errors_found == 0) {
         $row = mysqli_fetch_array($query_result);
         $hash = $row['password'];
@@ -101,6 +106,7 @@ if (!empty($_POST)) {
             $errors_found++;
         }
 
+        # If there are no errors, proceed to the next section.
         if ($errors_found == 0) {
             $display = array(
                 'email' => '',
