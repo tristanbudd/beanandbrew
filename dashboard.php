@@ -40,6 +40,8 @@ if (!isset($_SESSION['id'])) {
     <script src="script.js" async></script>
 </head>
 <body>
+<?php include_once("cookie_component.php"); ?>
+
 <div class="area">
     <div class="single-section" style="background-color: #000000;">
         <div class="container">

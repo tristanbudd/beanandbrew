@@ -168,3 +168,21 @@ confirm_password_input.onkeyup = function() {
         }
     }
 }
+
+function accept_cookies() {
+    const cookie_notice_window = document.getElementById("cookie_notice_window");
+    const date = new Date();
+    date.setTime(date.getTime() + (30*24*60*60*1000));
+    let expires = "expires="+ date.toUTCString();
+    document.cookie = "cookie_notice" + "=" + "1" + ";" + expires + ";path=/";
+    cookie_notice_window.remove()
+}
+
+function decline_cookies() {
+    const cookie_notice_window = document.getElementById("cookie_notice_window");
+    const date = new Date();
+    date.setTime(date.getTime() + (30*24*60*60*1000));
+    let expires = "expires="+ date.toUTCString();
+    document.cookie = "cookie_notice" + "=" + "0" + ";" + expires + ";path=/";
+    cookie_notice_window.remove()
+}

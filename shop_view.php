@@ -48,6 +48,8 @@ if (mysqli_num_rows($query_result) == 0) {
     <script src="script.js" async></script>
 </head>
 <body>
+<?php include_once("cookie_component.php"); ?>
+
 <header>
     <a class="nav-logo-link" href="index.php"><img class="nav-logo" src="img/bean_and_brew.png" alt="Bean & Brew Logo"></a>
 
